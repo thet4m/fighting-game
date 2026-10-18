@@ -10,7 +10,7 @@ class Fighter1(pygame.sprite.Sprite):
             'walk': self.load_frames(f'{sprite_folder}/walk.png', 6, 100, 100, 1.5),
             'attack': self.load_frames(f'{sprite_folder}/attack.png', 5, 110, 100, 1.5),
             'hurt': self.load_frames(f'{sprite_folder}/hurt.png', 8, 100, 100, 1.5),
-            'jump': self.load_frames(f'{sprite_folder}/jump.png', 8, 100, 100, 1.5), # Thêm animation nhảy
+            'jump': self.load_frames(f'{sprite_folder}/jump.png', 8, 100, 100, 1.5),
         }
         
         self.state = 'idle'
@@ -23,6 +23,7 @@ class Fighter1(pygame.sprite.Sprite):
 
         # Chỉ số & Vật lý
         self.hp = 100
+        self.max_hp = 100 # Thêm max_hp để đồng bộ với main.py
         self.floor_y = 500
         self.vel_y = 0 
         self.gravity = 1 
@@ -36,7 +37,6 @@ class Fighter1(pygame.sprite.Sprite):
         frames = []
         for i in range(num_frames):
             frame = pygame.Surface((width, height), pygame.SRCALPHA)
-            # Ép kiểu int cho tọa độ cắt để tránh sai số hiển thị gây nhấp nháy
             frame.blit(sheet, (0, 0), (int(i * width), 0, int(width), int(height)))
             frame = pygame.transform.scale(frame, (int(width * scale), int(height * scale)))
             frames.append(frame)
@@ -50,7 +50,7 @@ class Fighter1(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         new_state = 'idle'
         
-        # 1. Xử lý di chuyển ngang (Cho phép vừa di chuyển vừa đổi hướng kể cả khi đang nhảy)
+        # 1. Xử lý di chuyển ngang
         if keys[self.controls['left']]:
             new_state = 'walk'
             self.rect.x -= self.speed
@@ -70,7 +70,7 @@ class Fighter1(pygame.sprite.Sprite):
             self.vel_y = self.jump_power
             new_state = 'jump'
 
-        # 4. Nếu đang ở trên không (đang lơ lửng/rơi), ưu tiên hiển thị hình ảnh nhảy
+        # 4. Nếu đang ở trên không, ưu tiên hiển thị nhảy
         if self.rect.bottom < self.floor_y:
             new_state = 'jump'
             
@@ -101,15 +101,21 @@ class Fighter1(pygame.sprite.Sprite):
     def update_animation(self):
         self.frame_index += self.animation_speed
         
+        # Xử lý khi chạy hết số frame của animation hiện tại
         if self.frame_index >= len(self.animations[self.state]):
             if self.state in ['attack', 'cast', 'hurt']:
                 self.state = 'idle'
                 self.frame_index = 0
             elif self.state == 'jump':
-                # Giữ nguyên frame cuối cùng khi đang lơ lửng trên không
+                # Giừng ở frame cuối khi đang ở trên không
                 self.frame_index = len(self.animations[self.state]) - 1
             else:
                 self.frame_index = 0
+
+        # Nếu đã chạm đất mà state vẫn là jump thì phải trả về idle
+        if self.rect.bottom >= self.floor_y and self.state == 'jump':
+            self.state = 'idle'
+            self.frame_index = 0
             
         current_image = self.animations[self.state][int(self.frame_index)]
         
@@ -132,3 +138,11 @@ class Fighter1(pygame.sprite.Sprite):
             self.vel_y = 0
 
         self.update_animation()
+
+    def reset(self, x, y):
+        self.hp = self.max_hp
+        self.rect.topleft = (x, y)
+        self.state = 'idle'
+        self.frame_index = 0
+        self.vel_y = 0
+        self.attack_cooldown = 0    
