@@ -1,67 +1,70 @@
-# 🥊 Game Đối Kháng 2D (Python & Pygame)
+# 🥊 2D Fighting Game (Python & Pygame)
 
-Dự án game đối kháng 2 người chơi (Local 2-Player Fighting Game) được phát triển bằng ngôn ngữ Python sử dụng thư viện `pygame`. 
+A local 2-player fighting game project developed in Python using the `pygame` library.
 
-## ✨ Tính năng nổi bật
-* **Hệ thống trạng thái (State Machine):** Quản lý mượt mà các trạng thái của nhân vật: Đứng yên (`idle`), Di chuyển (`walk`), Nhảy (`jump`), Tấn công (`attack`), và Bị thương (`hurt`).
-* **Vật lý & Trọng lực:** Mô phỏng lực hút trọng trường, nhảy cao và phát hiện chạm sàn chuẩn xác.
-* **Va chạm & Hitbox:** Tính toán hitbox tấn công theo hướng mặt nhân vật và trừ máu đối thủ khi trúng đòn.
-* **Thanh máu động (Dynamic HP Bar):** Tự động co giãn theo chỉ số máu tối đa (`max_hp`).
-* **Màn hình chiến thắng & Reset:** Tự động hiển thị người chiến thắng khi hết máu và hỗ trợ phím `R` để chơi lại trận đấu ngay lập tức.
+## ✨ Key Features
+- **State Machine:** Smoothly manages character states: `idle`, `walk`, `jump`, `attack`, and `hurt`.
+- **Physics & Gravity:** Simulates gravitational pull, jump height, and precise floor collision detection.
+- **Collisions & Hitboxes:** Calculates attack hitboxes relative to the character's facing direction and deducts health upon hit.
+- **Dynamic HP Bar:** Automatically scales according to the maximum health (`max_hp`) index.
+- **Victory Screen & Reset:** Automatically displays the winner when health depletes and supports pressing `R` to restart the match instantly.
 
-## 📁 Cấu trúc thư mục dự án
+## 📁 Project Directory Structure
 ```text
 fighting-game/
 │
-├── main.py              # Vòng lặp game chính (Game loop), UI, thanh máu, sự kiện
-├── .gitignore           # Cấu hình loại bỏ file rác (pycache, venv)
-├── README.md            # Tài liệu giới thiệu dự án
-├── src/                 # Thư mục chứa mã nguồn các class nhân vật
-│   ├── fighter1.py      # Lớp xử lý logic cho Player 1
-│   └── fighter2.py      # Lớp xử lý logic cho Player 2
-└── assets/              # Thư mục chứa tài nguyên đồ họa (Sprite sheets)
-    ├── p1/              # Animation của Player 1 (idle, walk, attack, hurt, jump)
-    └── p2/              # Animation của Player 2 (idle, walk, attack, hurt, jump)
+├── main.py              # Main game loop, UI, health bars, event handling
+├── .gitignore           # Configuration to ignore junk files (pycache, venv)
+├── README.md            # Project documentation
+├── src/                 # Source code directory for character classes
+│   ├── fighter.py       # Base Fighter class handling core logic and OOP inheritance
+│   ├── fighter1.py      # Specific configuration for Player 1
+│   └── fighter2.py      # Specific configuration for Player 2
+└── assets/              # Graphic asset directory (Sprite sheets)
+    ├── p1/              # Player 1 animations (idle, walk, attack, hurt, jump)
+    └── p2/              # Player 2 animations (idle, walk, attack, hurt, jump)
 ```
 
-# 🎮 Phím điều khiển
-* **Player 1 (Bên trái):**
-Di chuyển: Phím A (Trái) / D (Phải)
+## 🎮 Controls
+* **Player 1 (Left side):**
 
-Nhảy: Phím W
+Movement: A (Left) / D (Right) keys
 
-Tấn công: Phím J
+Jump: W key
 
-Phòng thủ: Phím K
+Attack: J key
 
-Cast Skill: Phím C
+Defend: K key
 
-* **Player 2 (Bên phải):**
-Di chuyển: Phím Mũi tên Trái / Phải (← / →)
+Cast Skill: C key
 
-Nhảy: Phím Mũi tên Lên (↑)
+* **Player 2 (Right side):**
 
-Tấn công: Phím số 1
+Movement: Left / Right Arrow keys (← / →)
 
-Phòng thủ: Phím số 2
+Jump: Up Arrow key (↑)
 
-Cast Skill: Phím số 3
+Attack: Number 1 key
 
-# 🚀 Hướng dẫn cài đặt và chạy game
-1. **Yêu cầu hệ thống**
+Defend: Number 2 key
 
-Đã cài đặt Python trên máy tính.
+Cast Skill: Number 3 key
 
-2. **Cài đặt thư viện Pygame**
-Mở Terminal / PowerShell tại thư mục dự án và chạy lệnh:
+## 🚀 Installation and Execution Guide
+* **Prerequisites**
+Python installed on your computer.
 
-Bash
+* **Installation**
+Open Terminal / PowerShell in the project directory and run:
+```bash
 pip install pygame
-3. **Khởi chạy game**
-Chạy file điều khiển chính:
+```
 
-Bash
+* **Execution**
+Run the main control file:
+```bash
 python main.py
-4. **Chơi lại (Restart)**
+```
 
-Khi màn hình hiển thị người chiến thắng, nhấn phím R để reset trận đấu ngay lập tức.
+* **Restart**
+When the victory screen appears, press the R key to restart the match immediately.
